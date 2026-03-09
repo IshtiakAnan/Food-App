@@ -7,9 +7,12 @@
     <ul>
     {% for item in item_list %}
     <li>
-        <a href="{% url 'food:details' item.id %}">
-            <span class="item-name">{{ item.item_name }}</span>
-            <span class="item-desc">{{ item.item_desc }}</span>
+        <a href="{% url 'food:details' item.id %}" class="flex items-center">
+            <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}" class="w-12 h-12 rounded-full object-cover mr-4 shrink-0">
+            <div>
+                <span class="item-name">{{ item.item_name }}</span>
+                <span class="item-desc">{{ item.item_desc }}</span>
+            </div>
         </a>
     </li>
     {% endfor %}
