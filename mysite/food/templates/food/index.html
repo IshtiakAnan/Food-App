@@ -1,13 +1,9 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'food/style.css' %}">
-</head>
-<body>
+{% extends 'food/base.html' %}
+
+{% block title %}Food Items{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
     <ul>
     {% for item in item_list %}
     <li>
@@ -18,5 +14,5 @@
     </li>
     {% endfor %}
     </ul>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,3 +1,11 @@
-<h1>{{ item_info.item_name }}</h1>
-<p>{{ item_info.item_desc }}</p>
-<p>{{ item_info.item_price }}</p>
+{% extends 'food/base.html' %}
+
+{% block title %}{{ item_info.item_name }}{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-3xl font-bold text-gray-900">{{ item_info.item_name }}</h1>
+    <p class="mt-4 text-gray-600">{{ item_info.item_desc }}</p>
+    <p class="mt-2 text-2xl font-semibold text-indigo-600">${{ item_info.item_price }}</p>
+</div>
+{% endblock %}
