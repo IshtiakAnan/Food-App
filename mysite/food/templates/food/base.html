@@ -28,24 +28,10 @@
               <a href="{% url 'food:index' %}" class="text-sm font-medium text-gray-700 hover:text-gray-900">Home</a>
             </div>
 
-            <!-- Search & Cart -->
+            <!-- Add -->
             <div class="flex items-center space-x-4">
-              <!-- Search -->
-              <a href="#" class="p-2 text-gray-400 hover:text-gray-500">
-                <span class="sr-only">Search</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6">
-                  <path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </a>
-
-              <!-- Cart -->
-              <a href="#" class="group flex items-center p-2">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 shrink-0 text-gray-400 group-hover:text-gray-500">
-                  <path d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
-                <span class="sr-only">items in cart, view bag</span>
-              </a>
+              <!-- Add Item -->
+                <a href="{% url 'food:create_item' %}" class="text-sm font-medium text-gray-700 hover:text-gray-900">Add Item</a>
             </div>
 
           </div>
