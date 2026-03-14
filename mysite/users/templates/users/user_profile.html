@@ -1,0 +1,72 @@
+{% extends 'food/base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] bg-[#f8f9fa] px-5 py-10">
+	<div class="mx-auto w-full max-w-3xl">
+		<div class="bg-white rounded-xl shadow-lg border border-gray-100 p-8 sm:p-10">
+			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+				<div class="flex items-center gap-4">
+					{% if profile_picture_url %}
+					<img src="{{ profile_picture_url }}" alt="{{ display_name }} profile picture" class="h-16 w-16 rounded-full object-cover border border-red-100" />
+					{% else %}
+					<div class="h-16 w-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-2xl font-bold">
+						{{ user.username|first|upper }}
+					</div>
+					{% endif %}
+					<div>
+						<h1 class="text-3xl font-bold text-gray-800 leading-tight">{{ display_name }}</h1>
+						<p class="text-gray-500 text-sm">@{{ user.username }}</p>
+					</div>
+				</div>
+				<span class="inline-flex items-center justify-center rounded-full bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 uppercase tracking-wide">
+					Active User
+				</span>
+			</div>
+
+			<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div class="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+					<p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">First Name</p>
+					<p class="text-gray-800 text-base font-medium mt-1">{{ user.first_name|default:'Not set' }}</p>
+				</div>
+
+				<div class="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+					<p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Last Name</p>
+					<p class="text-gray-800 text-base font-medium mt-1">{{ user.last_name|default:'Not set' }}</p>
+				</div>
+
+				<div class="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 md:col-span-2">
+					<p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Email</p>
+					<p class="text-gray-800 text-base font-medium mt-1">{{ user.email|default:'Not set' }}</p>
+				</div>
+			</div>
+
+			<div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+				<div class="rounded-lg border border-red-100 bg-red-50 px-4 py-4">
+					<p class="text-xs uppercase tracking-wide text-red-600 font-semibold">Menu Items on Platform</p>
+					<p class="text-2xl font-bold text-gray-800 mt-1">{{ total_items }}</p>
+				</div>
+
+				<div class="rounded-lg border border-gray-200 bg-white px-4 py-4">
+					<p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Member Since</p>
+					<p class="text-base font-semibold text-gray-800 mt-1">{{ user.date_joined|date:'M d, Y' }}</p>
+					<p class="text-xs text-gray-500 mt-1">Last login: {{ user.last_login|date:'M d, Y g:i A'|default:'Never' }}</p>
+				</div>
+			</div>
+
+			<div class="mt-8 flex flex-col sm:flex-row gap-3 items-center sm:justify-center">
+				<a href="{% url 'food:index' %}" class="inline-flex items-center justify-center rounded-md bg-gray-800 text-white font-semibold px-5 py-3 hover:bg-red-600 transition-colors duration-300">
+					Back to Home
+				</a>
+				<a href="{% url 'food:create_item' %}" class="inline-flex items-center justify-center rounded-md border border-gray-200 text-gray-700 font-semibold px-5 py-3 hover:border-red-300 hover:text-red-600 transition-colors duration-300">
+					Add New Item
+				</a>
+                <a href="#" class="inline-flex items-center justify-center rounded-md border border-gray-200 text-gray-700 font-semibold px-5 py-3 hover:border-red-300 hover:text-red-600 transition-colors duration-300">
+					Edit Profile
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

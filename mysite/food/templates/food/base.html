@@ -30,9 +30,19 @@
 
             <!-- Add and login info -->
             <div class="flex items-center space-x-4">
-              <a href="{% url 'food:create_item' %}" class="text-sm font-medium text-gray-700 hover:text-gray-900">Add Item</a>
+              {% if user.is_authenticated %}
+              <div class="grid grid-cols-3 items-center gap-3 w-75">
+                <a href="{% url 'food:create_item' %}" class="block text-center text-sm font-medium text-gray-700 hover:text-gray-900">Add Item</a>
+                <a href="{% url 'profile' %}" class="block text-center text-sm font-medium text-gray-700 hover:text-gray-900">Profile</a>
+                <form method="post" action="{% url 'logout' %}" class="w-full">
+                  {% csrf_token %}
+                  <button type="submit" class="w-full text-center text-sm font-medium text-gray-700 hover:text-gray-900 cursor-pointer">Logout</button>
+                </form>
+              </div>
+              {% else %}
               <a href="{% url 'register' %}" class="text-sm font-medium text-gray-700 hover:text-gray-900">Register</a>
               <a href="{% url 'login' %}" class="text-sm font-medium text-gray-700 hover:text-gray-900">Login</a>
+              {% endif %}
             </div>
 
           </div>
