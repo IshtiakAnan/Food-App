@@ -1,8 +1,9 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .models import Item
-from django.template import loader
 from .forms import ItemForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import CreateView
 
 # Create your views here.
 
@@ -40,9 +41,21 @@ def create_item(request):
 
     return render(request, 'food/item-form.html', context)
 
+
+# This is a class based view
+
+class CreateItem(LoginRequiredMixin, CreateView):
+    model = Item
+    fields = ['item_name', 'item_desc', 'item_price', 'item_image']
+    template_name = 'food/item-form.html'
+
+    def form_valid(self, form):
+        form.instance.user_name = self.request.user
+        return super().form_valid(form)
+
 def update_item(request, id):
     item = Item.objects.get(id=id)
-    form = ItemForm(request.POST or None, instance=item)
+    form = ItemForm(request.POST or None, request.FILES or None, instance=item)
 
     if form.is_valid():
         form.save()
