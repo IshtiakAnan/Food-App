@@ -1,0 +1,69 @@
+{% extends 'food/base.html' %}
+
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+	<div class="flex items-center justify-between mb-8">
+		<div>
+			<h1 class="text-3xl font-bold text-gray-900">Your Cart</h1>
+			<p class="text-sm text-gray-500 mt-1">Review the items you want to order.</p>
+		</div>
+		<a href="{% url 'food:index' %}" class="inline-flex items-center justify-center rounded-md bg-gray-800 text-white font-semibold px-5 py-3 hover:bg-red-600 transition-colors duration-300">
+			Continue Shopping
+		</a>
+	</div>
+
+	<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+		<div class="lg:col-span-2 space-y-4">
+			{% if cart_items %}
+				{% for cart_item in cart_items %}
+				<div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+					<div class="flex items-center gap-4">
+						<img src="{{ cart_item.item.item_image.url }}" alt="{{ cart_item.item.item_name }}" class="h-20 w-20 rounded-lg object-cover border border-gray-100" />
+						<div>
+							<h2 class="text-lg font-semibold text-gray-900">{{ cart_item.item.item_name }}</h2>
+							<p class="text-sm text-gray-500">${{ cart_item.item.item_price }} each</p>
+							<p class="text-sm font-medium text-gray-700 mt-1">Line total: ${{ cart_item.line_total }}</p>
+						</div>
+					</div>
+
+					<div class="flex flex-wrap items-center gap-3">
+						<form method="post" action="{% url 'food:update_cart_item' cart_item.id %}" class="flex items-center gap-2">
+							{% csrf_token %}
+							<label class="text-sm text-gray-600">Qty</label>
+							<input type="number" name="quantity" value="{{ cart_item.quantity }}" min="1" max="99" class="w-20 rounded-md border border-gray-200 px-3 py-2 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100" />
+							<button type="submit" class="rounded-md border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:border-red-300 hover:text-red-600">Update</button>
+						</form>
+						<form method="post" action="{% url 'food:remove_from_cart' cart_item.id %}">
+							{% csrf_token %}
+							<button type="submit" class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">Remove</button>
+						</form>
+					</div>
+				</div>
+				{% endfor %}
+			{% else %}
+			<div class="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">
+				<p class="text-gray-600 text-lg font-medium">Your cart is empty.</p>
+				<p class="text-sm text-gray-500 mt-2">Browse the menu and add items you want to order.</p>
+			</div>
+			{% endif %}
+		</div>
+
+		<div class="lg:col-span-1">
+			<div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm sticky top-8">
+				<p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Cart Summary</p>
+				<p class="text-3xl font-bold text-gray-900 mt-2">${{ cart_total }}</p>
+				<p class="text-sm text-gray-500 mt-2">Checkout creates a pending order that the shop owner can confirm or cancel.</p>
+
+				<form method="post" action="{% url 'food:checkout_cart' %}" class="mt-6">
+					{% csrf_token %}
+					<button type="submit" {% if not cart_items %}disabled{% endif %} class="w-full rounded-md bg-gray-800 px-5 py-3 text-white font-semibold hover:bg-red-600 transition-colors duration-300 disabled:opacity-50">
+						Place Order
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

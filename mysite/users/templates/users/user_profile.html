@@ -49,6 +49,11 @@
 				</div>
 
 				<div class="rounded-lg border border-gray-200 bg-white px-4 py-4">
+					<p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Account Type</p>
+					<p class="text-base font-semibold text-gray-800 mt-1">{{ user_profile.get_role_display }}</p>
+				</div>
+
+				<div class="rounded-lg border border-gray-200 bg-white px-4 py-4">
 					<p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Member Since</p>
 					<p class="text-base font-semibold text-gray-800 mt-1">{{ user.date_joined|date:'M d, Y' }}</p>
 					<p class="text-xs text-gray-500 mt-1">Last login: {{ user.last_login|date:'M d, Y g:i A'|default:'Never' }}</p>
@@ -59,12 +64,19 @@
 				<a href="{% url 'food:index' %}" class="inline-flex items-center justify-center rounded-md bg-gray-800 text-white font-semibold px-5 py-3 hover:bg-red-600 transition-colors duration-300">
 					Back to Home
 				</a>
+				{% if is_manager %}
 				<a href="{% url 'food:create_item' %}" class="inline-flex items-center justify-center rounded-md border border-gray-200 text-gray-700 font-semibold px-5 py-3 hover:border-red-300 hover:text-red-600 transition-colors duration-300">
 					Add New Item
 				</a>
-                <a href="#" class="inline-flex items-center justify-center rounded-md border border-gray-200 text-gray-700 font-semibold px-5 py-3 hover:border-red-300 hover:text-red-600 transition-colors duration-300">
+				{% endif %}
+				<a href="{% url 'edit_profile' %}" class="inline-flex items-center justify-center rounded-md border border-gray-200 text-gray-700 font-semibold px-5 py-3 hover:border-red-300 hover:text-red-600 transition-colors duration-300">
 					Edit Profile
 				</a>
+			</div>
+
+			<div class="mt-6 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 md:col-span-2">
+				<p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Location</p>
+				<p class="text-gray-800 text-base font-medium mt-1">{{ profile_location|default:'Not set' }}</p>
 			</div>
 		</div>
 	</div>

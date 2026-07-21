@@ -1,0 +1,67 @@
+{% extends 'food/base.html' %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+	<div class="mb-8">
+		<h1 class="text-3xl font-bold text-gray-900">{% if is_shop_owner %}All Orders{% else %}My Orders{% endif %}</h1>
+		<p class="text-sm text-gray-500 mt-1">{% if is_shop_owner %}Review, edit, confirm, or cancel incoming orders.{% else %}Track your orders and cancel any pending one before it is confirmed.{% endif %}</p>
+	</div>
+
+	<div class="space-y-4">
+		{% for order in order_list %}
+		<div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+			<div>
+				<div class="flex flex-wrap items-center gap-3">
+					<h2 class="text-lg font-semibold text-gray-900">Order #{{ order.id }}</h2>
+					<span class="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide
+						{% if order.status == 'pending' %}bg-yellow-100 text-yellow-800{% elif order.status == 'confirmed' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+						{{ order.get_status_display }}
+					</span>
+				</div>
+				<p class="text-sm text-gray-500 mt-1">Customer: {{ order.user.username }}</p>
+				<p class="text-sm text-gray-500">Created: {{ order.created_at|date:'M d, Y g:i A' }}</p>
+				<p class="text-sm font-medium text-gray-700 mt-1">Total: ${{ order.total_amount }}</p>
+			</div>
+
+			<div class="flex flex-wrap gap-3">
+				<a href="{% url 'food:order_detail' order.id %}" class="inline-flex items-center justify-center rounded-md bg-gray-800 px-4 py-2 text-sm font-semibold text-white hover:bg-red-600 transition-colors duration-300">
+					View
+				</a>
+				{% if is_shop_owner and order.status == 'pending' %}
+				<a href="{% url 'food:order_edit' order.id %}" class="inline-flex items-center justify-center rounded-md border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:border-red-300 hover:text-red-600 transition-colors duration-300">
+					Edit
+				</a>
+				<form method="post" action="{% url 'food:confirm_order' order.id %}">
+					{% csrf_token %}
+					<button type="submit" class="inline-flex items-center justify-center rounded-md border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:border-green-300 hover:text-green-700 transition-colors duration-300">
+						Confirm
+					</button>
+				</form>
+				{% endif %}
+				{% if is_shop_owner %}
+				<form method="post" action="{% url 'food:cancel_order' order.id %}">
+					{% csrf_token %}
+					<button type="submit" class="inline-flex items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition-colors duration-300">
+						Cancel
+					</button>
+				</form>
+				{% elif order.user == user and order.status == 'pending' %}
+				<form method="post" action="{% url 'food:cancel_order' order.id %}">
+					{% csrf_token %}
+					<button type="submit" class="inline-flex items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition-colors duration-300">
+						Cancel
+					</button>
+				</form>
+				{% endif %}
+			</div>
+		</div>
+		{% empty %}
+		<div class="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">
+			<p class="text-gray-600 text-lg font-medium">No orders found.</p>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

@@ -15,14 +15,26 @@
             <p class="mt-4 text-gray-600">{{ item_info.item_desc }}</p>
             <p class="mt-2 text-2xl font-semibold text-indigo-600">${{ item_info.item_price }}</p>
             <div>
-                <!-- Update Button -->
+                {% if is_customer %}
+                <form method="post" action="{% url 'food:add_to_cart' item_info.id %}" class="mt-6 flex flex-col sm:flex-row gap-3 sm:items-end">
+                    {% csrf_token %}
+                    <div>
+                        <label for="id_quantity" class="block text-xs font-semibold uppercase tracking-wide text-red-600 mb-2">Quantity</label>
+                        <input type="number" name="quantity" value="1" min="1" max="99" class="w-28 rounded-md border border-gray-200 px-3 py-2.5 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100" />
+                    </div>
+                    <button type="submit" class="inline-block bg-gray-800 text-white py-3.5 px-6 rounded-md text-base font-semibold hover:bg-red-600 transition-colors duration-300 cursor-pointer">
+                        Add to Cart
+                    </button>
+                </form>
+                {% endif %}
+                {% if is_manager %}
                 <a href="{% url 'food:update_item' item_info.id %}" class="inline-block mt-6 bg-gray-800 text-white py-3.5 px-6 rounded-md text-base font-semibold hover:bg-red-600 transition-colors duration-300 cursor-pointer">
                     Update Item
                 </a>
-                <!-- Delete Button -->
                 <a href="{% url 'food:delete_item' item_info.id %}" class="inline-block mt-6 bg-red-600 text-white py-3.5 px-6 rounded-md text-base font-semibold hover:bg-red-700 transition-colors duration-300 cursor-pointer">
                     Delete Item
                 </a>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -10,6 +10,9 @@
 
         <form method="post" class="space-y-5">
             {% csrf_token %}
+            <div class="rounded-lg border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
+                Choose an account type. Managers can add items; shop owners and customers can browse and manage their profile.
+            </div>
             {% for field in form %}
             <div>
                 <label for="{{ field.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wide text-red-600 mb-2">

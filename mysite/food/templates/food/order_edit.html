@@ -1,0 +1,61 @@
+{% extends 'food/base.html' %}
+
+{% block title %}Edit Order #{{ order.id }}{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8">
+	<div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+		<h1 class="text-3xl font-bold text-gray-900">Edit Order #{{ order.id }}</h1>
+		<p class="text-sm text-gray-500 mt-1">Adjust quantities or remove items before confirming the order.</p>
+
+		<form method="post" class="mt-8 space-y-4">
+			{% csrf_token %}
+			{{ formset.management_form }}
+
+			{% if formset.non_form_errors %}
+			<div class="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+				{% for error in formset.non_form_errors %}
+				<p>{{ error }}</p>
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			{% for form in formset %}
+			<div class="rounded-lg border border-gray-200 p-4">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+					<div>
+						<p class="text-sm font-semibold text-gray-900">{{ form.instance.item.item_name }}</p>
+						<p class="text-xs text-gray-500">Unit price: ${{ form.instance.unit_price }}</p>
+						{{ form.id }}
+					</div>
+					<div>
+						<label class="block text-xs font-semibold uppercase tracking-wide text-red-600 mb-2">Quantity</label>
+						<div class="[&_input]:block [&_input]:w-full [&_input]:rounded-md [&_input]:border [&_input]:border-gray-200 [&_input]:px-3 [&_input]:py-2.5 [&_input]:focus:outline-none [&_input]:focus:border-red-500 [&_input]:focus:ring-2 [&_input]:focus:ring-red-100">
+							{{ form.quantity }}
+						</div>
+						{% if form.quantity.errors %}
+						<p class="text-red-500 text-xs mt-1">{{ form.quantity.errors.0 }}</p>
+						{% endif %}
+					</div>
+					<div class="flex items-center gap-3">
+						<label class="inline-flex items-center gap-2 text-sm text-gray-700">
+							{{ form.DELETE }}
+							Remove
+						</label>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+
+			<div class="flex justify-end gap-3 pt-2">
+				<a href="{% url 'food:order_detail' order.id %}" class="inline-flex items-center justify-center rounded-md border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-700 hover:border-red-300 hover:text-red-600 transition-colors duration-300">
+					Cancel
+				</a>
+				<button type="submit" class="inline-flex items-center justify-center rounded-md bg-gray-800 px-5 py-3 text-sm font-semibold text-white hover:bg-red-600 transition-colors duration-300">
+					Save Changes
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

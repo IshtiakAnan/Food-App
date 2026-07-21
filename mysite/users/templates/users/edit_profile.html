@@ -1,0 +1,94 @@
+{% extends 'food/base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] bg-[#f8f9fa] px-5 py-10">
+	<div class="mx-auto w-full max-w-3xl">
+		<div class="bg-white rounded-xl shadow-lg border border-gray-100 p-8 sm:p-10">
+			<div class="mb-8">
+				<h1 class="text-3xl font-bold text-gray-800">Edit Profile</h1>
+				<p class="text-sm text-gray-500 mt-2">Update your account details and profile information.</p>
+			</div>
+
+			<form method="post" enctype="multipart/form-data" class="space-y-8">
+				{% csrf_token %}
+
+				{% if user_form.non_field_errors or profile_form.non_field_errors %}
+				<div class="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+					{% for error in user_form.non_field_errors %}
+					<p>{{ error }}</p>
+					{% endfor %}
+					{% for error in profile_form.non_field_errors %}
+					<p>{{ error }}</p>
+					{% endfor %}
+				</div>
+				{% endif %}
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+					{% for field in user_form %}
+					<div class="md:col-span-1">
+						<label for="{{ field.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wide text-red-600 mb-2">
+							{{ field.label }}
+						</label>
+						<div class="[&_input]:block [&_input]:w-full [&_input]:px-3 [&_input]:py-2.5 [&_input]:bg-white [&_input]:border [&_input]:border-gray-200 [&_input]:rounded-md [&_input]:text-base [&_input]:focus:outline-none [&_input]:focus:border-red-500 [&_input]:focus:ring-2 [&_input]:focus:ring-red-100">
+							{{ field }}
+						</div>
+						{% if field.errors %}
+						<p class="text-red-500 text-xs mt-1">{{ field.errors.0 }}</p>
+						{% endif %}
+					</div>
+					{% endfor %}
+				</div>
+
+				<div class="rounded-lg border border-gray-200 bg-gray-50 p-5">
+					<div class="flex items-center gap-4">
+						{% if profile_picture_url %}
+						<img src="{{ profile_picture_url }}" alt="Current profile picture" class="h-20 w-20 rounded-full object-cover border border-gray-200" />
+						{% else %}
+						<div class="h-20 w-20 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-3xl font-bold">
+							{{ user.username|first|upper }}
+						</div>
+						{% endif %}
+						<div>
+							<p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Current Avatar</p>
+							<p class="text-sm text-gray-600 mt-1">Upload a new image below to replace it.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+					{% for field in profile_form %}
+					<div class="md:col-span-1">
+						<label for="{{ field.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wide text-red-600 mb-2">
+							{{ field.label }}
+						</label>
+						<div class="[&_input]:block [&_input]:w-full [&_input]:px-3 [&_input]:py-2.5 [&_input]:bg-white [&_input]:border [&_input]:border-gray-200 [&_input]:rounded-md [&_input]:text-base [&_input]:focus:outline-none [&_input]:focus:border-red-500 [&_input]:focus:ring-2 [&_input]:focus:ring-red-100 [&_input[type=file]]:py-2">
+							{{ field }}
+						</div>
+						{% if field.help_text %}
+						<p class="text-gray-500 text-xs mt-1">{{ field.help_text|striptags }}</p>
+						{% endif %}
+						{% if field.errors %}
+						<p class="text-red-500 text-xs mt-1">{{ field.errors.0 }}</p>
+						{% endif %}
+					</div>
+					{% endfor %}
+				</div>
+
+				<div class="flex flex-col sm:flex-row gap-3 sm:justify-end">
+					<a href="{% url 'profile' %}" class="inline-flex items-center justify-center rounded-md border border-gray-200 text-gray-700 font-semibold px-5 py-3 hover:border-red-300 hover:text-red-600 transition-colors duration-300">
+						Cancel
+					</a>
+					<a href="{% url 'password_change' %}" class="inline-flex items-center justify-center rounded-md border border-gray-200 text-gray-700 font-semibold px-5 py-3 hover:border-red-300 hover:text-red-600 transition-colors duration-300">
+						Change Password
+					</a>
+					<button type="submit" class="inline-flex items-center justify-center rounded-md bg-gray-800 text-white font-semibold px-5 py-3 hover:bg-red-600 transition-colors duration-300 cursor-pointer">
+						Save Changes
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

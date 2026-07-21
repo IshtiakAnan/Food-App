@@ -31,10 +31,18 @@
             <!-- Add and login info -->
             <div class="flex items-center space-x-4">
               {% if user.is_authenticated %}
-              <div class="grid grid-cols-3 items-center gap-3 w-75">
+              <div class="flex flex-wrap items-center gap-2">
+                {% if is_manager %}
                 <a href="{% url 'food:create_item' %}" class="block text-center text-sm font-medium text-gray-700 hover:text-gray-900">Add Item</a>
+                {% endif %}
+                {% if is_customer %}
+                <a href="{% url 'food:cart' %}" class="block text-center text-sm font-medium text-gray-700 hover:text-gray-900">Cart</a>
+                <a href="{% url 'food:orders' %}" class="block text-center text-sm font-medium text-gray-700 hover:text-gray-900">My Orders</a>
+                {% elif is_shop_owner %}
+                <a href="{% url 'food:orders' %}" class="block text-center text-sm font-medium text-gray-700 hover:text-gray-900">Orders</a>
+                {% endif %}
                 <a href="{% url 'profile' %}" class="block text-center text-sm font-medium text-gray-700 hover:text-gray-900">Profile</a>
-                <form method="post" action="{% url 'logout' %}" class="w-full">
+                <form method="post" action="{% url 'logout' %}" class="w-auto">
                   {% csrf_token %}
                   <button type="submit" class="w-full text-center text-sm font-medium text-gray-700 hover:text-gray-900 cursor-pointer">Logout</button>
                 </form>
@@ -82,6 +90,8 @@
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           &copy; {{ current_year }} MODERNA. All rights reserved.
         </div>
+
+      </footer>
 
 
 </body>
